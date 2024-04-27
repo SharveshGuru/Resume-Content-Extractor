@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Uploader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+            display: block;
+            width: 100%;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #message {
+            margin-bottom: 20px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+        #downloadButton {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resume Uploader</h1>
+        <input type="file" id="resumeInput" accept=".doc,.docx,.pdf" multiple>
+        <button id="uploadButton">Upload</button>
+        <div id="message"></div>
+        <button id="downloadButton">Download CSV</button>
+    </div>
+
+    <script>
+        document.getElementById('uploadButton').addEventListener('click', async () => {
+            const files = document.getElementById('resumeInput').files;
+            const formData = new FormData();
+            
+            for (const file of files) {
+                formData.append('resumes', file);
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                document.getElementById('message').textContent = data.message;
+
+                // Show download button after successful upload
+                document.getElementById('downloadButton').style.display = 'block';
+            } catch (error) {
+                console.error('Error uploading files:', error);
+                document.getElementById('message').textContent = 'Error uploading files. Please try again.';
+            }
+        });
+
+        document.getElementById('downloadButton').addEventListener('click', async () => {
+            try {
+                const response = await fetch('http://localhost:5000/download');
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'data.csv';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error downloading file:', error);
+            }
+        });
+    </script>
+</body>
+</html>
