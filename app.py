@@ -12,6 +12,8 @@ import extract_email
 import extract_phoneno
 import extract_name
 import extract_edu
+import nltk
+import spacy
 
 app = Flask(__name__)
 CORS(app)
@@ -61,7 +63,8 @@ def upload_files():
 @app.route('/download')
 def download_file():
     return send_from_directory('.', 'data.csv', as_attachment=True)
-
+nltk.download('stopwords')
+spacy.download("en_core_web_sm")
 with open("data.csv", 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(["Name","Email","Phone No","Education"])
