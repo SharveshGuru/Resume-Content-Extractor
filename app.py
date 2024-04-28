@@ -79,4 +79,4 @@ if __name__ == '__main__':
     test.exec()
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
-    app.run(host='0.0.0.0', port=10000,debug=True)
+    app.run(debug=True,ssl_context=("cert.pem", "key.pem"))
