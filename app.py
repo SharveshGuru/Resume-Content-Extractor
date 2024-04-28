@@ -12,11 +12,10 @@ import extract_email
 import extract_phoneno
 import extract_name
 import extract_edu
-import nltk
-import spacy.cli
+import test
 
-nltk.download('stopwords')
-spacy.cli.download('en_core_web_sm')
+#nltk.download('stopwords')
+#spacy.cli.download('en_core_web_sm')
 
 app = Flask(__name__)
 CORS(app)
@@ -77,6 +76,7 @@ def index():
 
 
 if __name__ == '__main__':
+    test.exec()
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
     app.run(debug=True)
