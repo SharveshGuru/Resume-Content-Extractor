@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Uploader</title>
+    <title>Resume Content Extractor</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,7 +52,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Resume Uploader</h1>
+        <h1>Resume Content Extractor</h1>
         <input type="file" id="resumeInput" accept=".doc,.docx,.pdf" multiple>
         <button id="uploadButton">Upload</button>
         <div id="message"></div>
@@ -69,7 +69,7 @@
             }
 
             try {
-                const response = await fetch('https://127.0.0.1:10000/upload', {
+                const response = await fetch('https://127.0.0.1:5000/upload', {
                     method: 'POST',
                     body: formData
                 });
@@ -87,7 +87,7 @@
 
         document.getElementById('downloadButton').addEventListener('click', async () => {
             try {
-                const response = await fetch('https://127.0.0.1:10000/download');
+                const response = await fetch('https://127.0.0.1:5000/download');
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
